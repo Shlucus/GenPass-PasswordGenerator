@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {}
+    "C:\\Users\\Zachary Dubé\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {
+    "C:\\Users\\Zachary Dubé\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
+        "projectUniqueName": "C:\\Users\\Zachary Dubé\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
         "projectName": "Solution-EDC",
-        "projectPath": "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
+        "projectPath": "C:\\Users\\Zachary Dubé\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
         "packagesPath": "C:\\Users\\Zachary Dubé\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\obj\\",
+        "outputPath": "C:\\Users\\Zachary Dubé\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Zachary Dubé\\AppData\\Roaming\\NuGet\\NuGet.Config",
