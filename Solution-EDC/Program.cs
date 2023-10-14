@@ -1,5 +1,4 @@
 ﻿using System.Dynamic;
-using static System.Console;
 
 namespace Solution_EDC
 {
@@ -7,23 +6,22 @@ namespace Solution_EDC
     {
         static void Main(string[] args)
         {
-            Introduction();                                 // Displays the introduction screen
+            Introduction();  // Displays the introduction screen
 
             List<string> userPrompts = new List<string>() { "firstName", "lastName", "birthDate", "passwordPurpose" }; //Create list with placeholders
 
             userPrompts = AskUserInputs(userPrompts);
 
-            foreach (string prompt in userPrompts)
-            {
-                WriteLine(prompt);
-            }
+            complicateInputs(userPrompts);
+
+            printGeneratedPassword(userPrompts);
 
         }
 
         public static void Introduction()
         {
             ChangeTextColor("red");
-            WriteLine(@"
+            Console.WriteLine(@"
 ░█████╗░██╗░░░██╗██████╗░██████╗░░░░░░░███████╗███████╗██████╗░░█████╗░
 ██╔══██╗██║░░░██║██╔══██╗██╔══██╗░░░░░░╚════██║██╔════╝██╔══██╗██╔══██╗
 ██║░░╚═╝██║░░░██║██████╔╝██████╔╝█████╗░░███╔═╝█████╗░░██████╔╝██║░░██║
@@ -32,51 +30,51 @@ namespace Solution_EDC
 ░╚════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░░░░░░░╚══════╝╚══════╝╚═╝░░╚═╝░╚════╝░");
             ChangeTextColor("white");
 
-            Write(@"Welcome to Cupp-Zero.
+            Console.Write(@"Welcome to Cupp-Zero.
 Your best friend for generating complex yet memorable passwords.
 
 Press any key to begin:");
 
-            ReadKey(true);
-            Clear();
+            Console.ReadKey(true);
+            Console.Clear();
         }
 
         public static List<string> AskUserInputs(List<string> list)
         {
 
-            Write("What is your first name?: ");
+            Console.Write("What is your first name?: ");
 
             ChangeTextColor("green");
-            list[0] = ReadLine();
+            list[0] = Console.ReadLine();
             ChangeTextColor("white");
 
 
-            Write("What is your surname?: ");
+            Console.Write("What is your surname?: ");
 
             ChangeTextColor("green");
-            list[1] = ReadLine();
+            list[1] = Console.ReadLine();
             ChangeTextColor("white");
 
-            Write("What is your date of birth? (Year/Month/Date): ");
+            Console.Write("What is your date of birth? (Year/Month/Date): ");
 
             ChangeTextColor("green");
-            list[2] = ReadLine();
+            list[2] = Console.ReadLine();
             ChangeTextColor("white");
 
-            Write("What platform will you use this password for?: ");
+            Console.Write("What platform will you use this password for?: ");
 
             ChangeTextColor("green");
-            list[3] = ReadLine();
+            list[3] = Console.ReadLine();
             ChangeTextColor("white");
 
-            Write("Would you like to add a keyword Y/[N]:");
-            ConsoleKeyInfo info = ReadKey(true);
-            WriteLine();
+            Console.Write("Would you like to add a keyword Y/[N]:");
+            ConsoleKeyInfo info = Console.ReadKey(true);
+            Console.WriteLine();
 
             if (info.Key == ConsoleKey.Y)
             {
-                Write("Please input keyword (Favorite sport, movie, artist, etc.): ");
-                list.Add(ReadLine());
+                Console.Write("Please input keyword (Favorite sport, movie, artist, etc.): ");
+                list.Add(Console.ReadLine());
             }
 
             return list;
@@ -87,29 +85,113 @@ Press any key to begin:");
             switch (color)
             {
                 case "purple":
-                    ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     break;
                 case "blue":
-                    ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     break;
                 case "green":
-                    ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Green;
                     break;
                 case "yellow":
-                    ForegroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     break;
                 case "orange":
-                    ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     break;
                 case "red":
-                    ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     break;
                 case "white":
-                    ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case "black":
-                    ForegroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.Black;
                     break;
+            }
+        }
+
+        public static List<string> complicateInputs(List<string> inputList)
+        {
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                inputList[i] = LeetSpeakConverter(inputList[i]);
+
+            }
+
+            return inputList;
+        }
+
+        public static string LeetSpeakConverter(string text)
+        {
+            //String text = @"\/\/4573Fu|_";
+            Dictionary<string, string> leetRules = new Dictionary<string, string>();
+
+
+            leetRules.Add("A", "4");
+            //leetRules.Add("A", @"/\");
+            leetRules.Add("a", "@");
+            //leetRules.Add("A", "^");
+
+            leetRules.Add("B", "13");
+            //leetRules.Add("/3", "B");
+            /*leetRules.Add("B", "|3");
+            leetRules.Add("B", "8");*/
+
+            leetRules.Add("X", "><");
+
+            //leetRules.Add("<", "C");
+            leetRules.Add("C", "(");
+
+            //leetRules.Add("|)", "D");
+            //leetRules.Add("|>", "D");
+
+            //leetRules.Add("3", "E");
+
+            //leetRules.Add("6", "G");
+
+            //leetRules.Add("/-/", "H");
+            //leetRules.Add("[-]", "H");
+            //leetRules.Add("]-[", "H");
+
+            //leetRules.Add("!", "I");
+
+            //leetRules.Add("|_", "L");
+
+            //leetRules.Add("_/", "J");
+            //leetRules.Add("_|", "J");
+
+            //leetRules.Add("1", "L");
+
+            //leetRules.Add("0", "O");
+
+            leetRules.Add("S", "5");
+            //leetRules.Add("S", "$");
+            leetRules.Add("s", "S");
+            //leetRules.Add("7", "T");
+
+            //leetRules.Add(@"\/\/", "W");
+            //leetRules.Add(@"\/", "V");
+
+            //leetRules.Add("2", "Z");
+
+            foreach (KeyValuePair<string, string> x in leetRules)
+            {
+                text = text.Replace(x.Key, x.Value);
+            }
+
+            return text;
+        }
+
+        public static void printGeneratedPassword(List<string> generatedPasswords)
+        {
+            ChangeTextColor("red");
+            Console.WriteLine(@"Here are the generated passwords: 
+===========================================================
+"); ChangeTextColor("white");
+            foreach (string password in generatedPasswords)
+            {
+                Console.WriteLine(password);
             }
         }
     }
