@@ -17,7 +17,7 @@
                 return "Please enter a valid input";
             }
 
-
+            Console.WriteLine("MOUAHAHAHAHA");
 
             foreach (char character in userInput.ToUpper())
             {
