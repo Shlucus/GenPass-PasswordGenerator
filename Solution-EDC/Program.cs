@@ -12,7 +12,7 @@ namespace Solution_EDC
 
         public static void Introduction()
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            ChangeTextColor("red");
             Console.WriteLine(@"
 ░█████╗░██╗░░░██╗██████╗░██████╗░░░░░░░███████╗███████╗██████╗░░█████╗░
 ██╔══██╗██║░░░██║██╔══██╗██╔══██╗░░░░░░╚════██║██╔════╝██╔══██╗██╔══██╗
@@ -20,15 +20,48 @@ namespace Solution_EDC
 ██║░░██╗██║░░░██║██╔═══╝░██╔═══╝░╚════╝██╔══╝░░██╔══╝░░██╔══██╗██║░░██║
 ╚█████╔╝╚██████╔╝██║░░░░░██║░░░░░░░░░░░███████╗███████╗██║░░██║╚█████╔╝
 ░╚════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░░░░░░░╚══════╝╚══════╝╚═╝░░╚═╝░╚════╝░");
-            Console.ForegroundColor = ConsoleColor.White;
+            ChangeTextColor("white");
 
-            Console.WriteLine(@"Welcome to Cupp-Zero.
+            Console.Write(@"Welcome to Cupp-Zero.
 Your best friend for generating complex yet memorable passwords.
 
-Press any key to beggin:");
+Press any key to begin:");
 
             Console.ReadKey(true);
             Console.Clear();
         }
+
+        public static void ChangeTextColor(string color)
+        {
+            switch (color)
+            {
+                case "purple":
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    break;
+                case "blue":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "green":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case "yellow":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "orange":
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    break;
+                case "red":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case "white":
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+                case "black":
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    break;
+            }
+        }
+
+
     }
 }
