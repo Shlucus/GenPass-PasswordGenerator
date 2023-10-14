@@ -10,7 +10,7 @@
 
         public static string SelectVowel(string userInput) //return should be "ae";
         {
-            string a = "a";
+            
             string foundVowels = "";
             if (string.IsNullOrEmpty(userInput))
             {
