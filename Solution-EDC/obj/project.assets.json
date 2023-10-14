@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lucas\\source\\repos\\Solution-EDC\\Solution-EDC.csproj",
+      "projectUniqueName": "C:\\Users\\lucas\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
       "projectName": "Solution-EDC",
-      "projectPath": "C:\\Users\\lucas\\source\\repos\\Solution-EDC\\Solution-EDC.csproj",
+      "projectPath": "C:\\Users\\lucas\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
       "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lucas\\source\\repos\\Solution-EDC\\obj\\",
+      "outputPath": "C:\\Users\\lucas\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
