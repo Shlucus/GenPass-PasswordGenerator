@@ -1,9 +1,12 @@
-﻿using System.Dynamic;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Solution_EDC
 {
     internal class Program
     {
+
+        #region Main
         static void Main(string[] args)
         {
             Introduction();  // Displays the introduction screen
@@ -12,12 +15,92 @@ namespace Solution_EDC
 
             userPrompts = AskUserInputs(userPrompts);
 
-            complicateInputs(userPrompts);
+            ComplicateInputs(userPrompts);
 
-            printGeneratedPassword(userPrompts);
+            PrintGeneratedPassword(userPrompts);
 
         }
+        #endregion 
 
+        // Call all encryption functions:
+        #region ComplicateInputs
+        public static List<string> ComplicateInputs(List<string> inputList)
+        {
+
+
+
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                inputList[i] = ExtractFirstLettersOfSyllables(inputList[i]);
+
+                inputList[i] = LeetSpeechConvertor(inputList[i]);
+
+            }
+
+            return inputList;
+        }
+        #endregion 
+
+        //Encryption functions:
+        #region LeetSpeechConvertor
+        public static string LeetSpeechConvertor(string text)
+        {
+
+            Dictionary<char, string[]> leetSpeechTable = new Dictionary<char, string[]>()
+                {
+                    { 'A', new string[]{ @"/\", "^", "4" } },
+                    { 'B', new string[]{ "13", "|3", "8" } },
+                    { 'b', new string[]{ "6"} },
+                    { 'C', new string[]{ "(", "<" } }
+                };
+
+            Random rnd = new Random();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (char c in text)
+            {
+                if (leetSpeechTable.TryGetValue(c, out string[] leetSpeechCharacters))
+                    sb.Append(leetSpeechCharacters[rnd.Next(0, leetSpeechCharacters.Length)]);
+                else
+                    sb.Append(c);
+            }
+
+            return sb.ToString();
+        }
+        #endregion
+
+        #region ExtractFirstLetterOfSyllables
+        public static string ExtractFirstLettersOfSyllables(string word)
+        {
+            // RETURNS STRING WITH ONLY FIRST LETTER OF EACH SYLLABLE
+
+            word = Regex.Replace(word, "[^a-zA-Z]", "");
+
+            if (word.Length == 0)
+            {
+                return string.Empty; // Empty string has no first letters
+            }
+
+            // Define a regular expression pattern to match vowel sequences
+            // This pattern matches one or more consecutive vowels or 'y' (with word boundaries)
+            Regex vowelPattern = new Regex(@"[aeiouy]+", RegexOptions.IgnoreCase);
+
+            // Split the word into syllables
+            string[] syllables = vowelPattern.Split(word);
+
+            // Extract the first letter of each syllable, excluding the last character
+            string firstLetters = string.Join("", syllables
+                .Where(syllable => syllable.Length > 0 && syllable != syllables.Last())
+                .Select(syllable => syllable[0]));
+
+            return firstLetters;
+        }
+        #endregion
+
+
+        //Helper functions
+        #region Introduction
         public static void Introduction()
         {
             ChangeTextColor("red");
@@ -38,7 +121,9 @@ Press any key to begin:");
             Console.ReadKey(true);
             Console.Clear();
         }
+        #endregion
 
+        #region AskUserInputs
         public static List<string> AskUserInputs(List<string> list)
         {
 
@@ -49,37 +134,39 @@ Press any key to begin:");
             ChangeTextColor("white");
 
 
-            Console.Write("What is your surname?: ");
+            //Console.Write("What is your surname?: ");
 
-            ChangeTextColor("green");
-            list[1] = Console.ReadLine();
-            ChangeTextColor("white");
+            //ChangeTextColor("green");
+            //list[1] = Console.ReadLine();
+            //ChangeTextColor("white");
 
-            Console.Write("What is your date of birth? (Year/Month/Date): ");
+            //Console.Write("What is your date of birth? (Year/Month/Date): ");
 
-            ChangeTextColor("green");
-            list[2] = Console.ReadLine();
-            ChangeTextColor("white");
+            //ChangeTextColor("green");
+            //list[2] = Console.ReadLine();
+            //ChangeTextColor("white");
 
-            Console.Write("What platform will you use this password for?: ");
+            //Console.Write("What platform will you use this password for?: ");
 
-            ChangeTextColor("green");
-            list[3] = Console.ReadLine();
-            ChangeTextColor("white");
+            //ChangeTextColor("green");
+            //list[3] = Console.ReadLine();
+            //ChangeTextColor("white");
 
-            Console.Write("Would you like to add a keyword Y/[N]:");
-            ConsoleKeyInfo info = Console.ReadKey(true);
-            Console.WriteLine();
+            //Console.Write("Would you like to add a keyword Y/[N]:");
+            //ConsoleKeyInfo info = Console.ReadKey(true);
+            //Console.WriteLine();
 
-            if (info.Key == ConsoleKey.Y)
-            {
-                Console.Write("Please input keyword (Favorite sport, movie, artist, etc.): ");
-                list.Add(Console.ReadLine());
-            }
+            //if (info.Key == ConsoleKey.Y)
+            //{
+            //    Console.Write("Please input keyword (Favorite sport, movie, artist, etc.): ");
+            //    list.Add(Console.ReadLine());
+            //}
 
             return list;
         }
+        #endregion
 
+        #region ChangeTextColor
         public static void ChangeTextColor(string color)
         {
             switch (color)
@@ -110,80 +197,10 @@ Press any key to begin:");
                     break;
             }
         }
+        #endregion
 
-        public static List<string> complicateInputs(List<string> inputList)
-        {
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                inputList[i] = LeetSpeakConverter(inputList[i]);
-
-            }
-
-            return inputList;
-        }
-
-        public static string LeetSpeakConverter(string text)
-        {
-            //String text = @"\/\/4573Fu|_";
-            Dictionary<string, string> leetRules = new Dictionary<string, string>();
-
-
-            leetRules.Add("A", "4");
-            //leetRules.Add("A", @"/\");
-            leetRules.Add("a", "@");
-            //leetRules.Add("A", "^");
-
-            leetRules.Add("B", "13");
-            //leetRules.Add("/3", "B");
-            /*leetRules.Add("B", "|3");
-            leetRules.Add("B", "8");*/
-
-            leetRules.Add("X", "><");
-
-            //leetRules.Add("<", "C");
-            leetRules.Add("C", "(");
-
-            //leetRules.Add("|)", "D");
-            //leetRules.Add("|>", "D");
-
-            //leetRules.Add("3", "E");
-
-            //leetRules.Add("6", "G");
-
-            //leetRules.Add("/-/", "H");
-            //leetRules.Add("[-]", "H");
-            //leetRules.Add("]-[", "H");
-
-            //leetRules.Add("!", "I");
-
-            //leetRules.Add("|_", "L");
-
-            //leetRules.Add("_/", "J");
-            //leetRules.Add("_|", "J");
-
-            //leetRules.Add("1", "L");
-
-            //leetRules.Add("0", "O");
-
-            leetRules.Add("S", "5");
-            //leetRules.Add("S", "$");
-            leetRules.Add("s", "S");
-            //leetRules.Add("7", "T");
-
-            //leetRules.Add(@"\/\/", "W");
-            //leetRules.Add(@"\/", "V");
-
-            //leetRules.Add("2", "Z");
-
-            foreach (KeyValuePair<string, string> x in leetRules)
-            {
-                text = text.Replace(x.Key, x.Value);
-            }
-
-            return text;
-        }
-
-        public static void printGeneratedPassword(List<string> generatedPasswords)
+        #region PrintGeneratedPassword
+        public static void PrintGeneratedPassword(List<string> generatedPasswords)
         {
             ChangeTextColor("red");
             Console.WriteLine(@"Here are the generated passwords: 
@@ -194,6 +211,7 @@ Press any key to begin:");
                 Console.WriteLine(password);
             }
         }
+        #endregion
     }
 
 }
