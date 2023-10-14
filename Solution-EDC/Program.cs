@@ -30,5 +30,11 @@ Press any key to beggin:");
             Console.ReadKey(true);
             Console.Clear();
         }
+
+        static void TestingFunction()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            
+        }
     }
 }

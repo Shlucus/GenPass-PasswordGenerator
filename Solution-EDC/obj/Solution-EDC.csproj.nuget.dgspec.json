@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucas\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {}
+    "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucas\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {
+    "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucas\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
+        "projectUniqueName": "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
         "projectName": "Solution-EDC",
-        "projectPath": "C:\\Users\\lucas\\source\\repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
-        "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucas\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\obj\\",
+        "projectPath": "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\Solution-EDC.csproj",
+        "packagesPath": "C:\\Users\\Zachary Dubé\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Zachary Dubé\\Source\\Repos\\Geekfest-Solution-EDC\\Solution-EDC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Zachary Dubé\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
