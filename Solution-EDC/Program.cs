@@ -1,4 +1,5 @@
 ﻿using System.Dynamic;
+using static System.Console;
 
 namespace Solution_EDC
 {
@@ -14,7 +15,7 @@ namespace Solution_EDC
 
             foreach (string prompt in userPrompts)
             {
-                Console.WriteLine(prompt);
+                WriteLine(prompt);
             }
 
         }
@@ -22,7 +23,7 @@ namespace Solution_EDC
         public static void Introduction()
         {
             ChangeTextColor("red");
-            Console.WriteLine(@"
+            WriteLine(@"
 ░█████╗░██╗░░░██╗██████╗░██████╗░░░░░░░███████╗███████╗██████╗░░█████╗░
 ██╔══██╗██║░░░██║██╔══██╗██╔══██╗░░░░░░╚════██║██╔════╝██╔══██╗██╔══██╗
 ██║░░╚═╝██║░░░██║██████╔╝██████╔╝█████╗░░███╔═╝█████╗░░██████╔╝██║░░██║
@@ -31,51 +32,51 @@ namespace Solution_EDC
 ░╚════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░░░░░░░╚══════╝╚══════╝╚═╝░░╚═╝░╚════╝░");
             ChangeTextColor("white");
 
-            Console.Write(@"Welcome to Cupp-Zero.
+            Write(@"Welcome to Cupp-Zero.
 Your best friend for generating complex yet memorable passwords.
 
 Press any key to begin:");
 
-            Console.ReadKey(true);
-            Console.Clear();
+            ReadKey(true);
+            Clear();
         }
 
         public static List<string> AskUserInputs(List<string> list)
         {
 
-            Console.Write("What is your first name?: ");
+            Write("What is your first name?: ");
 
             ChangeTextColor("green");
-            list[0] = Console.ReadLine();
+            list[0] = ReadLine();
             ChangeTextColor("white");
 
 
-            Console.Write("What is your surname?: ");
+            Write("What is your surname?: ");
 
             ChangeTextColor("green");
-            list[1] = Console.ReadLine();
+            list[1] = ReadLine();
             ChangeTextColor("white");
 
-            Console.Write("What is your date of birth? (Year/Month/Date): ");
+            Write("What is your date of birth? (Year/Month/Date): ");
 
             ChangeTextColor("green");
-            list[2] = Console.ReadLine();
+            list[2] = ReadLine();
             ChangeTextColor("white");
 
-            Console.Write("What platform will you use this password for?: ");
+            Write("What platform will you use this password for?: ");
 
             ChangeTextColor("green");
-            list[3] = Console.ReadLine();
+            list[3] = ReadLine();
             ChangeTextColor("white");
 
-            Console.Write("Would you like to add a keyword Y/[N]:");
-            ConsoleKeyInfo info = Console.ReadKey(true);
-            Console.WriteLine();
+            Write("Would you like to add a keyword Y/[N]:");
+            ConsoleKeyInfo info = ReadKey(true);
+            WriteLine();
 
             if (info.Key == ConsoleKey.Y)
             {
-                Console.Write("Please input keyword (Favorite sport, movie, artist, etc.): ");
-                list.Add(Console.ReadLine());
+                Write("Please input keyword (Favorite sport, movie, artist, etc.): ");
+                list.Add(ReadLine());
             }
 
             return list;
@@ -86,28 +87,28 @@ Press any key to begin:");
             switch (color)
             {
                 case "purple":
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    ForegroundColor = ConsoleColor.DarkMagenta;
                     break;
                 case "blue":
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    ForegroundColor = ConsoleColor.Blue;
                     break;
                 case "green":
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    ForegroundColor = ConsoleColor.Green;
                     break;
                 case "yellow":
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    ForegroundColor = ConsoleColor.Yellow;
                     break;
                 case "orange":
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    ForegroundColor = ConsoleColor.DarkYellow;
                     break;
                 case "red":
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    ForegroundColor = ConsoleColor.Red;
                     break;
                 case "white":
-                    Console.ForegroundColor = ConsoleColor.White;
+                    ForegroundColor = ConsoleColor.White;
                     break;
                 case "black":
-                    Console.ForegroundColor = ConsoleColor.Black;
+                    ForegroundColor = ConsoleColor.Black;
                     break;
             }
         }
