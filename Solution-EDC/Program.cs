@@ -1,40 +1,33 @@
-﻿using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-
-namespace Solution_EDC
+﻿namespace Solution_EDC
 {
     internal class Program
     {
-        static void Main(string[] args)
+
+        public static void Main(string[] args)
         {
-            Introduction();
+         
         }
 
-        public static void Introduction()
+        public static string SelectVowel(string userInput) //return should be "ae";
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(@"
-░█████╗░██╗░░░██╗██████╗░██████╗░░░░░░░███████╗███████╗██████╗░░█████╗░
-██╔══██╗██║░░░██║██╔══██╗██╔══██╗░░░░░░╚════██║██╔════╝██╔══██╗██╔══██╗
-██║░░╚═╝██║░░░██║██████╔╝██████╔╝█████╗░░███╔═╝█████╗░░██████╔╝██║░░██║
-██║░░██╗██║░░░██║██╔═══╝░██╔═══╝░╚════╝██╔══╝░░██╔══╝░░██╔══██╗██║░░██║
-╚█████╔╝╚██████╔╝██║░░░░░██║░░░░░░░░░░░███████╗███████╗██║░░██║╚█████╔╝
-░╚════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░░░░░░░╚══════╝╚══════╝╚═╝░░╚═╝░╚════╝░");
-            Console.ForegroundColor = ConsoleColor.White;
+            string a = "a";
+            string foundVowels = "";
+            if (string.IsNullOrEmpty(userInput))
+            {
+                return "Please enter a valid input";
+            }
 
-            Console.WriteLine(@"Welcome to Cupp-Zero.
-Your best friend for generating complex yet memorable passwords.
 
-Press any key to beggin:");
 
-            Console.ReadKey(true);
-            Console.Clear();
+            foreach (char character in userInput.ToUpper())
+            {
+                if (character == 'A' || character == 'E' || character == 'O')
+                {
+                    foundVowels += character;
+                }
+            }
+            return foundVowels;
         }
 
-        static void TestingFunction()
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            
-        }
     }
 }
