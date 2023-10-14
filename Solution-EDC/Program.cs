@@ -10,23 +10,7 @@
 
         public static string SelectVowel(string userInput) //return should be "ae";
         {
-            string a = "a";
-            string foundVowels = "";
-            if (string.IsNullOrEmpty(userInput))
-            {
-                return "Please enter a valid input";
-            }
 
-            Console.WriteLine("MOUAHAHAHAHA");
-
-            foreach (char character in userInput.ToUpper())
-            {
-                if (character == 'A' || character == 'E' || character == 'O')
-                {
-                    foundVowels += character;
-                }
-            }
-            return foundVowels;
         }
 
     }
