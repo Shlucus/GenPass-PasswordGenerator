@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Drawing;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Solution_EDC
@@ -26,17 +27,23 @@ namespace Solution_EDC
         #region ComplicateInputs
         public static List<string> ComplicateInputs(List<string> inputList)
         {
-
-
-
             for (int i = 0; i < inputList.Count; i++)
             {
+                int myInt = 0;
+
+                if (Int32.TryParse(inputList[i], out myInt) == true)
+                {
+                    YearTwoChars(myInt);
+                    
+                }
+                else
+                {
                 inputList[i] = ExtractFirstLettersOfSyllables(inputList[i]);
 
                 inputList[i] = LeetSpeechConvertor(inputList[i]);
+                }
 
             }
-
             return inputList;
         }
         #endregion 
@@ -45,8 +52,11 @@ namespace Solution_EDC
         #region LeetSpeechConvertor
         public static string LeetSpeechConvertor(string text)
         {
+            Random rnd = new Random();                                                    //Initiate Random object              
 
-            Dictionary<char, string[]> leetSpeechTable = new Dictionary<char, string[]>()
+            StringBuilder sb = new StringBuilder();                                       //Initiate StringBuilder object
+
+            Dictionary<char, string[]> leetSpeechTable = new Dictionary<char, string[]>() //Initiate Dictionary with leetspeech conversions,
                 {
                     { 'A', new string[]{ @"/\", "^", "4" } },
                     { 'B', new string[]{ "13", "|3", "8" } },
@@ -54,11 +64,8 @@ namespace Solution_EDC
                     { 'C', new string[]{ "(", "<" } }
                 };
 
-            Random rnd = new Random();
-
-            StringBuilder sb = new StringBuilder();
-
-            foreach (char c in text)
+            // For every character in the passed string...
+            foreach (char c in text) 
             {
                 if (leetSpeechTable.TryGetValue(c, out string[] leetSpeechCharacters))
                     sb.Append(leetSpeechCharacters[rnd.Next(0, leetSpeechCharacters.Length)]);
@@ -98,8 +105,15 @@ namespace Solution_EDC
         }
         #endregion
 
+        #region YearsTwoChars
+        public static int YearTwoChars(int number)
+        {
+            int lastTwoDigits = (int)(number % 100);
+            return lastTwoDigits;
+        }
+        #endregion
 
-        //Helper functions
+        //Helper functions:
         #region Introduction
         public static void Introduction()
         {
@@ -127,40 +141,41 @@ Press any key to begin:");
         public static List<string> AskUserInputs(List<string> list)
         {
 
-            Console.Write("What is your first name?: ");
+            Console.Write("What platform will this be used on? "); //done //output ytb or yt
 
             ChangeTextColor("green");
-            list[0] = Console.ReadLine();
+            list.Add(Console.ReadLine());
             ChangeTextColor("white");
 
 
-            //Console.Write("What is your surname?: ");
+            Console.Write("What is the current year?: "); //done // output 23 (2023) (year will change and is not a fix date ex: birthdate yr)
 
-            //ChangeTextColor("green");
-            //list[1] = Console.ReadLine();
-            //ChangeTextColor("white");
+            ChangeTextColor("green");
+            list.Add(Console.ReadLine());
+            ChangeTextColor("white");
 
-            //Console.Write("What is your date of birth? (Year/Month/Date): ");
+            Console.Write("What is your second favorite category of videos to watch?: "); //should be something only user knows are can relate/recall later
 
-            //ChangeTextColor("green");
-            //list[2] = Console.ReadLine();
-            //ChangeTextColor("white");
+            ChangeTextColor("green");
+            list.Add(Console.ReadLine());
+            ChangeTextColor("white");
 
-            //Console.Write("What platform will you use this password for?: ");
+            Console.Write($"What language do you use on {list[0]}?: ");
 
-            //ChangeTextColor("green");
-            //list[3] = Console.ReadLine();
-            //ChangeTextColor("white");
+            ChangeTextColor("green");
+            list.Add(Console.ReadLine());
+            ChangeTextColor("white");
 
-            //Console.Write("Would you like to add a keyword Y/[N]:");
-            //ConsoleKeyInfo info = Console.ReadKey(true);
-            //Console.WriteLine();
+            Console.Write("Would you like to add a keyword to include within the password? [Y]/[N]:");
+            ConsoleKeyInfo info = Console.ReadKey(true);
+            Console.WriteLine();
 
-            //if (info.Key == ConsoleKey.Y)
-            //{
-            //    Console.Write("Please input keyword (Favorite sport, movie, artist, etc.): ");
-            //    list.Add(Console.ReadLine());
-            //}
+
+            if (info.Key == ConsoleKey.Y)
+            {
+                Console.Write("Please input keyword a memorable word: ");
+                list.Add(Console.ReadLine());
+            }
 
             return list;
         }
@@ -212,6 +227,22 @@ Press any key to begin:");
             }
         }
         #endregion
+
+        //#region TryParse
+        //static bool TryParse(string input)
+        ////Takes in an string input value, if can be parsed into int value = return int value, if not = Terminate:
+        //{
+        //    int myInt;                                // Initiate variable to hold the parsed value              
+        //    bool didWork;
+        //    didWork = int.TryParse(input, out myInt); // send to didWork the result of parsing input to myInt (true/false)
+
+        //    if (!didWork)                                                       // If false/didntwork...
+        //    {
+        //        Environment.Exit(0);                                            //Terminates the program.
+        //    }
+        //    return didWork;                                                       // If true/worked...
+        //}
+        //#endregion
     }
 
 }
