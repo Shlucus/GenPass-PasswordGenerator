@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -10,15 +11,25 @@ namespace Solution_EDC
         #region Main
         static void Main(string[] args)
         {
-            Introduction();  // Displays the introduction screen
-
             List<string> userPrompts = new List<string>() { "firstName", "lastName", "birthDate", "passwordPurpose" }; //Create list with placeholders
+            List<string> initialPrompts = new List<string>();
+            string password;
+
+            Introduction();  // Displays the introduction screen
 
             userPrompts = AskUserInputs(userPrompts);
 
-            ComplicateInputs(userPrompts);
+            ScrambleKeywords(userPrompts);
 
-            PrintGeneratedPassword(userPrompts);
+            initialPrompts = GenerateList(userPrompts);
+
+            userPrompts = ComplicateInputs(userPrompts);
+
+            password = JoinString(userPrompts);
+
+            PrintGeneratedPassword(password);
+
+            ExplainPassword(initialPrompts, userPrompts);
 
         }
         #endregion 
@@ -29,21 +40,21 @@ namespace Solution_EDC
         {
             for (int i = 0; i < inputList.Count; i++)
             {
+                //inputListComplicated.Add(inputList[i]);
                 int myInt = 0;
 
                 if (Int32.TryParse(inputList[i], out myInt) == true)
                 {
-                    YearTwoChars(myInt);
-                    
+                    inputList[i] = Convert.ToString(YearTwoChars(myInt));
                 }
                 else
                 {
-                inputList[i] = ExtractFirstLettersOfSyllables(inputList[i]);
+                    inputList[i] = ExtractFirstLettersOfSyllables(inputList[i]);
 
-                inputList[i] = LeetSpeechConvertor(inputList[i]);
+                    inputList[i] = LeetSpeechConvertor(inputList[i]);
                 }
-
             }
+            
             return inputList;
         }
         #endregion 
@@ -110,6 +121,24 @@ namespace Solution_EDC
         {
             int lastTwoDigits = (int)(number % 100);
             return lastTwoDigits;
+
+        }
+        #endregion
+
+        #region ScrambleKeyworlds
+        public static void ScrambleKeywords(List<string> keywords)
+        {
+            Random rnd = new Random();
+
+            for (int i = 0; i < keywords.Count; i++)
+            {
+                int k = rnd.Next(0, keywords.Count);
+
+                // switch keywords[i] with keywords[k]
+                string placeholder = keywords[i];
+                keywords[i] = keywords[k];
+                keywords[k] = placeholder;
+            }
         }
         #endregion
 
@@ -144,26 +173,26 @@ Press any key to begin:");
             Console.Write("What platform will this be used on? "); //done //output ytb or yt
 
             ChangeTextColor("green");
-            list.Add(Console.ReadLine());
+            list[0] = Console.ReadLine();
             ChangeTextColor("white");
 
 
             Console.Write("What is the current year?: "); //done // output 23 (2023) (year will change and is not a fix date ex: birthdate yr)
 
             ChangeTextColor("green");
-            list.Add(Console.ReadLine());
+            list[1] = Console.ReadLine();
             ChangeTextColor("white");
 
             Console.Write("What is your second favorite category of videos to watch?: "); //should be something only user knows are can relate/recall later
 
             ChangeTextColor("green");
-            list.Add(Console.ReadLine());
+            list[2] = Console.ReadLine();
             ChangeTextColor("white");
 
             Console.Write($"What language do you use on {list[0]}?: ");
 
             ChangeTextColor("green");
-            list.Add(Console.ReadLine());
+            list[3] = Console.ReadLine();
             ChangeTextColor("white");
 
             Console.Write("Would you like to add a keyword to include within the password? [Y]/[N]:");
@@ -215,34 +244,58 @@ Press any key to begin:");
         #endregion
 
         #region PrintGeneratedPassword
-        public static void PrintGeneratedPassword(List<string> generatedPasswords)
+        public static void PrintGeneratedPassword(string pass)
         {
             ChangeTextColor("red");
-            Console.WriteLine(@"Here are the generated passwords: 
-===========================================================
+            Console.WriteLine(@"
+Here is your generated password: 
+=================================
 "); ChangeTextColor("white");
-            foreach (string password in generatedPasswords)
-            {
-                Console.WriteLine(password);
-            }
+            Console.WriteLine(pass);
+
+
         }
         #endregion
 
-        //#region TryParse
-        //static bool TryParse(string input)
-        ////Takes in an string input value, if can be parsed into int value = return int value, if not = Terminate:
-        //{
-        //    int myInt;                                // Initiate variable to hold the parsed value              
-        //    bool didWork;
-        //    didWork = int.TryParse(input, out myInt); // send to didWork the result of parsing input to myInt (true/false)
+        public static string JoinString(List<string> list)
+        {
+            StringBuilder builder = new StringBuilder();
 
-        //    if (!didWork)                                                       // If false/didntwork...
-        //    {
-        //        Environment.Exit(0);                                            //Terminates the program.
-        //    }
-        //    return didWork;                                                       // If true/worked...
-        //}
-        //#endregion
+            foreach (string prompt in list)
+            {
+                builder.Append(prompt);
+            }
+
+            
+            string passsword = builder.ToString();
+            Console.WriteLine(passsword);
+            return passsword;
+        }
+
+        public static void ExplainPassword(List<string> inputPrompts, List<string> complexPrompts)
+        {
+            for (int i = 0; i < inputPrompts.Count; i++)
+            {
+                Console.WriteLine(inputPrompts[i] + " = " + complexPrompts[i] );
+            }
+
+            //int[,] test2D = new int[4,2] 
+            
+        }
+
+        #region GenerateIntArray 
+        public static List<string> GenerateList(List<string> oldList)
+        {
+            List<string> newList = new List<string>(oldList.Count);
+            for (int i = 0; i < oldList.Count; i++)  //Iterate through each index of the List...
+            {
+                newList.Add(oldList[i]);
+            }
+            return newList;                       // Return the List.
+        }
+        #endregion
+
+
     }
 
 }
