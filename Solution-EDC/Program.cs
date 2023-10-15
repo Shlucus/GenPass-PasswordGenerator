@@ -1,27 +1,35 @@
-﻿using System.Drawing;
-using System.Reflection.Emit;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
+using test;
 
 namespace Solution_EDC
 {
     internal class Program
     {
 
-        #region Main
+        #region Constants
+
+        const string WARNING_COLOR = "red";
+        const string INPUT_COLOR = "green";
+        const string OUTPUT_COLOR = "gray";
+        const string MEDIUM_COLOR = "yellow";
+
+        #endregion
+
         static void Main(string[] args)
         {
-            List<string> userPrompts = new List<string>() { "firstName", "lastName", "birthDate", "passwordPurpose" }; //Create list with placeholders
+            List<string> userPrompts = new List<string>(); //Create list with placeholders
+
             List<string> initialPrompts = new List<string>();
             string password;
 
-            Introduction();  // Displays the introduction screen
+            DisplayMenu();  // Displays the introduction screen
 
-            userPrompts = AskUserInputs(userPrompts);
+            GetUserInputs(userPrompts);
 
-            ScrambleKeywords(userPrompts);
+            ShuffleListItems(userPrompts);
 
-            initialPrompts = GenerateList(userPrompts);
+            initialPrompts = CopyStringList(userPrompts);
 
             userPrompts = ComplicateInputs(userPrompts);
 
@@ -29,38 +37,54 @@ namespace Solution_EDC
 
             PrintGeneratedPassword(password);
 
-            ExplainPassword(initialPrompts, userPrompts);
+            DisplayPasswordTransformation(initialPrompts, userPrompts);
 
         }
-        #endregion 
 
-        // Call all encryption functions:
-        #region ComplicateInputs
         public static List<string> ComplicateInputs(List<string> inputList)
         {
+            string complexityChoice = GetUserComplexity();
             for (int i = 0; i < inputList.Count; i++)
             {
-                //inputListComplicated.Add(inputList[i]);
-                int myInt = 0;
-
-                if (Int32.TryParse(inputList[i], out myInt) == true)
+                if (complexityChoice == "1")
                 {
-                    inputList[i] = Convert.ToString(YearTwoChars(myInt));
+                    if (Int32.TryParse(inputList[i], out int myInt))
+                        inputList[i] = GetYearLastTwoDigits(myInt).ToString();
+                    else
+                    {
+                        inputList[i] = GetWordAbbreviation(inputList[i]);
+                    }
                 }
-                else
+                else if (complexityChoice == "2")
                 {
-                    inputList[i] = ExtractFirstLettersOfSyllables(inputList[i]);
-
-                    inputList[i] = LeetSpeechConvertor(inputList[i]);
+                    if (Int32.TryParse(inputList[i], out int myInt))
+                        inputList[i] = GetYearLastTwoDigits(myInt).ToString();
+                    else
+                    {
+                        inputList[i] = GetWordAbbreviation(inputList[i]);
+                        inputList[i] = LeetSpeechConvertor(inputList[i]);
+                    }
                 }
+                else if (complexityChoice == "3")
+                {
+                    if (Int32.TryParse(inputList[i], out int myInt))
+                        inputList[i] = GetYearLastTwoDigits(myInt).ToString();
+                    else
+                    {
+                        inputList[i] = GetWordAbbreviation(inputList[i]);
+                        inputList[i] = CaesarCipher(inputList[i], 1, true);
+                        //inputList[i] = LeetSpeechConvertor(inputList[i]);
+
+                    }
+                }
+
             }
-            
+
             return inputList;
         }
-        #endregion 
 
-        //Encryption functions:
-        #region LeetSpeechConvertor
+        #region Encryption functions
+
         public static string LeetSpeechConvertor(string text)
         {
             Random rnd = new Random();                                                    //Initiate Random object              
@@ -69,14 +93,24 @@ namespace Solution_EDC
 
             Dictionary<char, string[]> leetSpeechTable = new Dictionary<char, string[]>() //Initiate Dictionary with leetspeech conversions,
                 {
-                    { 'A', new string[]{ @"/\", "^", "4" } },
+                    { 'A', new string[]{ @"/-", "^", "4" } },
                     { 'B', new string[]{ "13", "|3", "8" } },
+                    { 'C', new string[]{ "(", "<" } },
+                    { 'D', new string[]{ "|)", "[)", "|>" } },
+                    { 'J', new string[]{ "|", "/" } },
+                    { 'M', new string[]{ @"|/|", "^^" } },
+                    { 'I', new string[]{ "!", "|", "1" } },
                     { 'b', new string[]{ "6"} },
-                    { 'C', new string[]{ "(", "<" } }
+                    { 'c', new string[]{ "(", "<" } },
+                    { 'e', new string[]{ "3" } },
+                    { 's', new string[]{ "5", "$" } },
+                    { 'i', new string[]{ "!", "|", "1" } },
+                    { 't', new string[]{ "+", "7" } }
+
                 };
 
             // For every character in the passed string...
-            foreach (char c in text) 
+            foreach (char c in text)
             {
                 if (leetSpeechTable.TryGetValue(c, out string[] leetSpeechCharacters))
                     sb.Append(leetSpeechCharacters[rnd.Next(0, leetSpeechCharacters.Length)]);
@@ -86,132 +120,210 @@ namespace Solution_EDC
 
             return sb.ToString();
         }
-        #endregion
 
-        #region ExtractFirstLetterOfSyllables
-        public static string ExtractFirstLettersOfSyllables(string word)
+        public static string GetWordAbbreviation(string word)
         {
-            // RETURNS STRING WITH ONLY FIRST LETTER OF EACH SYLLABLE
+            word = word.ToLower();
 
-            word = Regex.Replace(word, "[^a-zA-Z]", "");
+            string[] bigraphs = new string[] { "bl", "br", "ch", "ck", "cl", "cr", "dr", "fl", "fr", "gh", "gl", "gr", "ng", "ph", "pl", "pr", "qu", "sc", "sh", "sk", "sl", "sm", "sn", "sp", "st", "sw", "th", "tr", "tw", "wh", "wr" };
+            string[] trigraphs = new string[] { "nth", "sch", "scr", "shr", "spl", "spr", "squ", "str", "thr" };
+
+            word = word.Trim();
 
             if (word.Length == 0)
-            {
-                return string.Empty; // Empty string has no first letters
-            }
+                return string.Empty;
 
-            // Define a regular expression pattern to match vowel sequences
-            // This pattern matches one or more consecutive vowels or 'y' (with word boundaries)
-            Regex vowelPattern = new Regex(@"[aeiouy]+", RegexOptions.IgnoreCase);
+            Regex vowelPattern = new Regex(@"[aeiou]+", RegexOptions.IgnoreCase);
 
-            // Split the word into syllables
             string[] syllables = vowelPattern.Split(word);
 
-            // Extract the first letter of each syllable, excluding the last character
-            string firstLetters = string.Join("", syllables
-                .Where(syllable => syllable.Length > 0 && syllable != syllables.Last())
-                .Select(syllable => syllable[0]));
+            StringBuilder sb = new StringBuilder();
 
-            return firstLetters;
+            for (int i = 0; i < syllables.Length - 1; i++)
+            {
+                if (syllables[i].Length != 0)
+                {
+                    string subStr;
+
+                    if (syllables[i].Length >= 3 && bigraphs.Contains(subStr = syllables[i].Substring(0, 3)))
+                        sb.Append(UppercaseFirstLetter(subStr));
+                    else if (syllables[i].Length >= 2 && bigraphs.Contains(subStr = syllables[i].Substring(0, 2)))
+                        sb.Append(UppercaseFirstLetter(subStr));
+                    else
+                        sb.Append(syllables[i][0]);
+                }
+            }
+
+            return sb.ToString();
         }
-        #endregion
 
-        #region YearsTwoChars
-        public static int YearTwoChars(int number)
+        public static string UppercaseFirstLetter(string word)
         {
-            int lastTwoDigits = (int)(number % 100);
-            return lastTwoDigits;
+            StringBuilder sb = new StringBuilder();
 
+            sb.Append(word[0].ToString().ToUpper());
+
+            for (int i = 1; i < word.Length; i++)
+                sb.Append(word[i]);
+
+            return sb.ToString();
         }
-        #endregion
 
-        #region ScrambleKeyworlds
-        public static void ScrambleKeywords(List<string> keywords)
+        public static int GetYearLastTwoDigits(int number)
+        {
+            return number % 100;
+        }
+
+        public static string CaesarCipher(string text, uint uintKey, bool cipher = true)
+        {
+            int key = (int)uintKey;
+
+            const int MIN_CHAR_INDEX = (int)Char.MinValue;
+            const int MAX_CHAR_INDEX = (int)Char.MaxValue;
+
+            if (!cipher)
+                key = -key;
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (char c in text)
+            {
+                int index = (int)c;
+
+                index += key;
+
+                if (index > MAX_CHAR_INDEX)
+                    index -= MAX_CHAR_INDEX;
+                else if (index < MIN_CHAR_INDEX)
+                    index += MAX_CHAR_INDEX;
+
+                sb.Append((char)index);
+            }
+
+            return sb.ToString();
+        }
+
+        public static void ShuffleListItems(List<string> list)
         {
             Random rnd = new Random();
 
-            for (int i = 0; i < keywords.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                int k = rnd.Next(0, keywords.Count);
+                int k = rnd.Next(0, list.Count);
 
-                // switch keywords[i] with keywords[k]
-                string placeholder = keywords[i];
-                keywords[i] = keywords[k];
-                keywords[k] = placeholder;
+                // switch list[0] with list[k]
+                string j = list[0];
+                list[0] = list[k];
+                list[k] = j;
             }
         }
+
         #endregion
 
-        //Helper functions:
-        #region Introduction
-        public static void Introduction()
+        #region Helper functions
+
+        public static void DisplayMenu()
         {
-            ChangeTextColor("red");
-            Console.WriteLine(@"
-░█████╗░██╗░░░██╗██████╗░██████╗░░░░░░░███████╗███████╗██████╗░░█████╗░
-██╔══██╗██║░░░██║██╔══██╗██╔══██╗░░░░░░╚════██║██╔════╝██╔══██╗██╔══██╗
-██║░░╚═╝██║░░░██║██████╔╝██████╔╝█████╗░░███╔═╝█████╗░░██████╔╝██║░░██║
-██║░░██╗██║░░░██║██╔═══╝░██╔═══╝░╚════╝██╔══╝░░██╔══╝░░██╔══██╗██║░░██║
-╚█████╔╝╚██████╔╝██║░░░░░██║░░░░░░░░░░░███████╗███████╗██║░░██║╚█████╔╝
-░╚════╝░░╚═════╝░╚═╝░░░░░╚═╝░░░░░░░░░░░╚══════╝╚══════╝╚═╝░░╚═╝░╚════╝░");
-            ChangeTextColor("white");
+            string s = @"Welcome to";
+            Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop + 7);
+            Console.WriteLine(s);
 
-            Console.Write(@"Welcome to Cupp-Zero.
-Your best friend for generating complex yet memorable passwords.
+            ChangeForegroundColor("blue");
+            Console.WriteLine(@"                                                                                                   .-""""-.
+                                                                                                  / .--. \
+                        .g8""""""bgd                      `7MM""""""Mq.                                / /    \ \
+                      .dP'     `M                        MM   `MM.                               | |    | |
+                      dM'       `   .gP""Ya `7MMpMMMb.    MM   ,M9 ,6""Yb.  ,pP""Ybd ,pP""Ybd        | |.-""""-.|
+                      MM           ,M'   Yb  MM    MM    MMmmdM9 8)   MM  8I   `"" 8I   `""       ///`.::::.`\
+                      MM.    `7MMF'8M""""""""""""  MM    MM    MM       ,pm9MM  `YMMMa. `YMMMa.      ||| ::/  \:: ;
+                      `Mb.     MM  YM.    ,  MM    MM    MM      8M   MM  L.   I8 L.   I8      ||; ::\__/:: ;
+                        `""bmmmdPY   `Mbmmd'.JMML  JMML..JMML.    `Moo9^Yo.M9mmmP' M9mmmP'       \\\ '::::' /
+                                                                                                 `=':-..-'`
+                                                                                              ");
+            ChangeForegroundColor(OUTPUT_COLOR);
 
-Press any key to begin:");
+
+            string description = "Your best friend for generating complex yet memorable passwords.";
+            Console.SetCursorPosition((Console.WindowWidth - description.Length) / 2, Console.CursorTop);
+            Console.WriteLine(description);
+
+
+            //Press any key to begin ");
+
+            ChangeForegroundColor("grey");
+            description = "Press any key to continue...";
+            Console.SetCursorPosition((Console.WindowWidth - description.Length) / 2, Console.CursorTop);
+            Console.WriteLine(description);
 
             Console.ReadKey(true);
             Console.Clear();
         }
-        #endregion
 
-        #region AskUserInputs
-        public static List<string> AskUserInputs(List<string> list)
+        public static void GetUserInputs(List<string> list)
         {
+            const ConsoleKey CONFIRM_KEY = ConsoleKey.Y;
+            const int PAUSE_LENGTH = 200; // length of Thread.Sleep() in milliseconds
 
-            Console.Write("What platform will this be used on? "); //done //output ytb or yt
-
-            ChangeTextColor("green");
-            list[0] = Console.ReadLine();
-            ChangeTextColor("white");
-
-
-            Console.Write("What is the current year?: "); //done // output 23 (2023) (year will change and is not a fix date ex: birthdate yr)
-
-            ChangeTextColor("green");
-            list[1] = Console.ReadLine();
-            ChangeTextColor("white");
-
-            Console.Write("What is your second favorite category of videos to watch?: "); //should be something only user knows are can relate/recall later
-
-            ChangeTextColor("green");
-            list[2] = Console.ReadLine();
-            ChangeTextColor("white");
-
-            Console.Write($"What language do you use on {list[0]}?: ");
-
-            ChangeTextColor("green");
-            list[3] = Console.ReadLine();
-            ChangeTextColor("white");
-
-            Console.Write("Would you like to add a keyword to include within the password? [Y]/[N]:");
-            ConsoleKeyInfo info = Console.ReadKey(true);
-            Console.WriteLine();
-
-
-            if (info.Key == ConsoleKey.Y)
+            string[] questions = new string[]
             {
-                Console.Write("Please input keyword a memorable word: ");
-                list.Add(Console.ReadLine());
+                "What platform will this be used on? ", //done //output ytb or yt
+                "What is the current year?: ", //done // output 23 (2023) (year will change and is not a fix date ex: birthdate yr)
+            };
+
+            for (int i = 0; i < questions.Length; i++)
+            {
+                string[] plateformInformation;
+                ChangeForegroundColor(INPUT_COLOR);
+                Console.Write(questions[i]);
+                ChangeForegroundColor(OUTPUT_COLOR);
+
+                if (i == 0)
+                {
+                    AppName platform = new AppName(Console.ReadLine());
+                    plateformInformation = platform.QuestionsForLogoId();
+
+                    for (int j = 0; j < plateformInformation.Length; j++)
+                    {
+                        list.Add(plateformInformation[j]);
+                    }
+
+
+                }
+                else
+                {
+                    list.Add(Console.ReadLine());
+                }
             }
 
-            return list;
-        }
-        #endregion
+                Console.Write($"What language do you use on {list[0]}?: ");
+                ChangeForegroundColor(INPUT_COLOR);
+                list.Add(Console.ReadLine());
+                ChangeForegroundColor(OUTPUT_COLOR);
 
-        #region ChangeTextColor
-        public static void ChangeTextColor(string color)
+                Console.Write("Would you like to add a keyword to include within the password? Press [Y]/[N]");
+                ConsoleKeyInfo info = Console.ReadKey(true);
+                Console.WriteLine();
+
+                if (info.Key == CONFIRM_KEY)
+                {
+                    // The purpose of Sleep and ReadKey here is to create a buffer between the previous and next questions
+                    // If the user presses Y and Enter in quick succession for the previous question, this buffer will prevent
+                    // the next question( with ReadLine command) to take "Enter" as the user input
+                    Thread.Sleep(PAUSE_LENGTH);
+
+                    if (Console.KeyAvailable)
+                        Console.ReadKey(true);
+
+                    Console.Write("Please input keyword a memorable word: ");
+
+                    ChangeForegroundColor(INPUT_COLOR);
+                    list.Add(Console.ReadLine());
+                    ChangeForegroundColor(OUTPUT_COLOR);
+                }
+            
+        }
+
+        static void ChangeForegroundColor(string color)
         {
             switch (color)
             {
@@ -236,66 +348,86 @@ Press any key to begin:");
                 case "white":
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
+                case "gray":
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
                 case "black":
                     Console.ForegroundColor = ConsoleColor.Black;
                     break;
+
             }
         }
-        #endregion
 
-        #region PrintGeneratedPassword
-        public static void PrintGeneratedPassword(string pass)
+        static void PrintGeneratedPassword(string password)
         {
-            ChangeTextColor("red");
-            Console.WriteLine(@"
-Here is your generated password: 
-=================================
-"); ChangeTextColor("white");
-            Console.WriteLine(pass);
+            Console.Clear();
 
+            ChangeForegroundColor(WARNING_COLOR);
+            Console.WriteLine("Here is your generated password:\n=================================");
+            ChangeForegroundColor(OUTPUT_COLOR);
 
+            Console.WriteLine(password);
         }
-        #endregion
 
         public static string JoinString(List<string> list)
         {
             StringBuilder builder = new StringBuilder();
 
-            foreach (string prompt in list)
-            {
-                builder.Append(prompt);
-            }
+            foreach (string str in list)
+                builder.Append(str);
 
-            
-            string passsword = builder.ToString();
-            Console.WriteLine(passsword);
-            return passsword;
+            string result = builder.ToString();
+
+            return result;
         }
 
-        public static void ExplainPassword(List<string> inputPrompts, List<string> complexPrompts)
+        public static void DisplayPasswordTransformation(List<string> inputPrompts, List<string> complexPrompts)
         {
             for (int i = 0; i < inputPrompts.Count; i++)
-            {
-                Console.WriteLine(inputPrompts[i] + " = " + complexPrompts[i] );
-            }
+                Console.WriteLine(inputPrompts[i] + " = " + complexPrompts[i]);
 
             //int[,] test2D = new int[4,2] 
-            
         }
 
-        #region GenerateIntArray 
-        public static List<string> GenerateList(List<string> oldList)
+        public static List<string> CopyStringList(List<string> oldList)
         {
             List<string> newList = new List<string>(oldList.Count);
-            for (int i = 0; i < oldList.Count; i++)  //Iterate through each index of the List...
-            {
+
+            for (int i = 0; i < oldList.Count; i++)
                 newList.Add(oldList[i]);
-            }
-            return newList;                       // Return the List.
+
+            return newList;
         }
+
+        public static string GetUserComplexity()
+        {
+            string choice;
+            Console.WriteLine(@"Please select a password complexity:
+");
+            ChangeForegroundColor("black");
+            Console.BackgroundColor
+            = ConsoleColor.Green;
+            Console.Write("[    1. Simple     ]");
+
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.Write("[    2. Medium     ]");
+
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.Write("[    3. Complex    ]");
+            Console.WriteLine(@"
+");
+
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            ChangeForegroundColor("white");
+            Console.WriteLine("Choice: ");
+
+            choice = Console.ReadLine();
+
+            return choice;
+        }
+
         #endregion
 
-
     }
-
 }
