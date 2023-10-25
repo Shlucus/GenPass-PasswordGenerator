@@ -25,7 +25,7 @@ the password will be used for which currently only accepts Youtube or Discord. O
 This project is open source so feel free to tune this software to your liking :)
 
 
-## Collaborators 
+## Our team: 
 - [Lucas Lalumière](https://github.com/Shlucus)
 - [Zachary Dubé](https://github.com/CompSciZach)
 - [Rambert Tsafack](https://github.com/rambertheone)
