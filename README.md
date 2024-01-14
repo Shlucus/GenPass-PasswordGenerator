@@ -6,7 +6,7 @@ This repository is the solution of <ins>team EDC</ins> for the [Bell Geekfest Ha
 
 
 ## GenPass
-- ${\color{cyan}   Solution    }$: GenPass, a software to generate complex yet memorable passwords that defeat password crackers.
+- ${\color{cyan}   Solution    }$: GenPass, an innovative software designed for Online Privacy & Security, enabling users to generate complex yet memorable passwords using series of prompts and multiple  encryption methods (leetspeak, truncation, caesar cypher) to defeat password cracking tools like CUPP and wordlists like rockyou.txt while remaining easy enough for a user to mentally recall.
 
 <img width="1393" alt="image" src="https://github.com/Shlucus/Geekfest-Solution-EDC/assets/111912000/809d7214-607e-41e6-b942-043123bd44e6">
 
